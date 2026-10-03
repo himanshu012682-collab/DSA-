@@ -1,21 +1,33 @@
 class Solution {
 public:
     vector<int> distinctDifferenceArray(vector<int>& nums) {
-        vector<int>arr(nums.size());
-        for(int i=0;i<nums.size();i++){
-            unordered_set<int>a;
-            unordered_set<int>b;
-            for(int j=i+1;j<nums.size();j++){
-                a.insert(nums[j]);
-            }
-            for(int j=0;j<=i;j++){
-                b.insert(nums[j]);
-            }
-            arr[i]=b.size()-a.size();
+        int n = nums.size();
+        vector<int> ans(n);
 
+        unordered_set<int> left;
+        unordered_map<int, int> freq;
 
+        // Count frequency of every element
+        for (int x : nums) {
+            freq[x]++;
         }
-        return arr;
-        
+
+        for (int i = 0; i < n; i++) {
+
+            // Current element is now part of left
+            left.insert(nums[i]);
+
+            // Remove current element from right
+            freq[nums[i]]--;
+
+            // If no occurrence remains on right
+            if (freq[nums[i]] == 0) {
+                freq.erase(nums[i]);
+            }
+
+            ans[i] = left.size() - freq.size();
+        }
+
+        return ans;
     }
 };
