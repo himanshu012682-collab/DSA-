@@ -10,27 +10,29 @@
  * };
  */
 class Solution {
- public:
-  int countNodes(TreeNode* root) {
-    if (root == nullptr)
-      return 0;
+public:
+    int countNodes(TreeNode* root) {
+        if(root==NULL){
+            return 0;
+        }
+        TreeNode*left=root;
+        TreeNode*right=root;
+        int leftheight=0;
 
-    TreeNode* left = root;
-    TreeNode* right = root;
-    int heightL = 0;
-    int heightR = 0;
+        int rightheight=0;
+        while(left!=NULL){
+            left=left->left;
+            leftheight++;
 
-    while (left != nullptr) {
-      ++heightL;
-      left = left->left;
+        }
+        while(right!=NULL){
+            right=right->right;
+            rightheight++;
+        }
+        if(leftheight==rightheight){
+            return pow(2,leftheight)-1;
+        }
+        return countNodes(root->left)+countNodes(root->right)+1;
+        
     }
-
-    while (right != nullptr) {
-      ++heightR;
-      right = right->right;
-    }
-
-    if (heightL == heightR)  // `root` is a complete tree.
-      return pow(2, heightL) - 1;
-    return 1 + countNodes(root->left) + countNodes(root->right);
-    }};
+};
